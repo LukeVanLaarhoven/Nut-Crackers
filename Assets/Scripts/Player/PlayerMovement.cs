@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float speed;
     private Rigidbody2D rb;
     private Collider2D boxCollider;
+
+    public float speed;
     public float jumpForce;
     public float jumpButtonReleaseDamping;
     public float extraHeight;
     public float hangTime;
     private float hangCounter;
     private float h;
+
+    private bool isAimingDiagonally;
 
     [SerializeField]
     private LayerMask platformLayerMask;
@@ -75,10 +78,35 @@ public class PlayerMovement : MonoBehaviour
         #endregion
 
         #region aiming
-
-        if (GetVerticalAxis() >= 0.01f)
+        // aming up
+        if (GetVerticalAxis() >= 0.01f && !isAimingDiagonally)
         {
             AimUp();
+        }
+
+        if (GetVerticalAxis() >= 0.01f && GetHorizontalAxis() >= 0.01f)
+        {
+            isAimingDiagonally = true;
+            AimDiagonallyRight();
+        }
+        else
+        {
+            isAimingDiagonally = false;
+        }
+
+        if (GetVerticalAxis() >= 0.01f && GetHorizontalAxis() <= -0.01f)
+        {
+            isAimingDiagonally = true;
+            AimDiagonallyLeft();
+        }
+        else
+        {
+            isAimingDiagonally = false;
+        }
+
+        if (GetVerticalAxis() <= -0.01f)
+        {
+            Duck();
         }
 
         #endregion
@@ -112,12 +140,22 @@ public class PlayerMovement : MonoBehaviour
 
     public void AimUp()
     {
-
+        print("Aiming up");
     }
 
-    public void AimDiagonally()
+    public void AimDiagonallyRight()
     {
+        print("Aiming diagonally Rightways");
+    }
 
+    public void AimDiagonallyLeft()
+    {
+        print("Aiming diagonally Leftways");
+    }
+
+    public void Duck()
+    {
+        print("Duck");
     }
 
     void Shoot()
