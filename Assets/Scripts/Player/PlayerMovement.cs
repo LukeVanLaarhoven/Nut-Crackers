@@ -28,7 +28,8 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         h = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
-
+        #region groundCheck
+        //check for grounded and add some hangtime to still jump if not on platform annymore
         if (IsGrounded())
         {
             hangCounter = hangTime;
@@ -37,7 +38,10 @@ public class PlayerMovement : MonoBehaviour
         {
             hangCounter -= Time.deltaTime;
         }
+        #endregion
 
+        #region jumping
+        //jumping
         if (Input.GetButtonDown("Jump") && hangCounter > 0)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
@@ -47,10 +51,42 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * jumpButtonReleaseDamping);
         }
+        #endregion
+
+        #region flipping
+        //flipping the transform to face the correct side to shoot
+        if (GetHorizontalAxis() >= 0.01f)
+        {
+            transform.localScale = new Vector3(1, 1, 1);
+        }
+
+        if (GetHorizontalAxis() <= -0.01f)
+        {
+            transform.localScale = new Vector3(-1, 1, 1);
+        }
+        #endregion
+
+        #region Shoot
+        // shooting the weapon
+        if (Input.GetAxis("Fire1") >= 0.001f)
+        {
+            Shoot();
+        }
+        #endregion
+
+        #region aiming
+
+        if (GetVerticalAxis() >= 0.01f)
+        {
+            AimUp();
+        }
+
+        #endregion
     }
 
     private void FixedUpdate()
     {
+        //moving
         transform.Translate(h, 0, 0);
     }
 
@@ -72,5 +108,30 @@ public class PlayerMovement : MonoBehaviour
         Debug.DrawRay(boxCollider.bounds.center, Vector2.down * (boxCollider.bounds.extents.y + extraHeight), raycolor);
 
         return raycastHit.collider != null;
+    }
+
+    public void AimUp()
+    {
+
+    }
+
+    public void AimDiagonally()
+    {
+
+    }
+
+    void Shoot()
+    {
+
+    }
+
+    private float GetHorizontalAxis()
+    {
+        return Input.GetAxis("Horizontal");
+    }
+
+    private float GetVerticalAxis()
+    {
+        return Input.GetAxis("Vertical");
     }
 }
