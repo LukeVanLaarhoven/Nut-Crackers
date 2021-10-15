@@ -10,6 +10,9 @@ public class PlayerMovement : MonoBehaviour
     public float jumpForce;
     public float jumpButtonReleaseDamping;
     public float extraHeight;
+    public float hangTime;
+    private float hangCounter;
+    private float h;
 
     [SerializeField]
     private LayerMask platformLayerMask;
@@ -24,10 +27,18 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float h = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
-        transform.Translate(h, 0, 0);
+        h = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
 
-        if (Input.GetButtonDown("Jump") && IsGrounded())
+        if (IsGrounded())
+        {
+            hangCounter = hangTime;
+        }
+        else
+        {
+            hangCounter -= Time.deltaTime;
+        }
+
+        if (Input.GetButtonDown("Jump") && hangCounter > 0)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
@@ -38,9 +49,15 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        transform.Translate(h, 0, 0);
+    }
+
     private bool IsGrounded()
     {
-        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, extraHeight, platformLayerMask);
+        Vector2 size = new Vector2(boxCollider.bounds.size.x - 0.1f, boxCollider.bounds.size.y);
+        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, size, 0f, Vector2.down, extraHeight, platformLayerMask);
 
         Color raycolor;
         if (raycastHit.collider != null)
