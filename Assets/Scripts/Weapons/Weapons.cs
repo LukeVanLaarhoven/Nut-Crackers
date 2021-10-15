@@ -4,24 +4,23 @@ using UnityEngine;
 
 public class Weapons : MonoBehaviour
 {
-    private float rateOfFire;
-    private float weaponSpread;
+    public float rateOfFire;
+    public float weaponSpread;
+    public float bulletSpeed;
 
-    private void Start()
-    {
-        
-    }
-
-    private void Update()
-    {
-        
-    }
+    public GameObject barrel;
+    private GameObject bulletPrefab;
 
     public void Shoot()
     {
-        if (Input.GetButton("Fire1"))
+        if (Input.GetButton("Fire1") && rateOfFire < 0)
         {
             print("Shoot");
         }
+    }
+
+    private void CalculateBulletSpread()
+    {
+        Quaternion angle = Quaternion.Euler(0, 0, weaponSpread);
     }
 }
