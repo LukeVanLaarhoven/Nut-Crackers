@@ -4,5 +4,8 @@ using UnityEngine;
 
 public class Weapons_Rifle : Weapons
 {
-    
+    private void Update()
+    {
+        Shoot();
+    }
 }
