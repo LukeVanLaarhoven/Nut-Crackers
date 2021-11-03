@@ -168,9 +168,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30544e182e842304988ff5afaceae6c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rateOfFire: 0
-  weaponSpread: 50
-  bulletSpeed: 20
+  rateOfFire: 2
+  weaponSpread: 2
+  bulletSpeed: 40
   barrel: {fileID: 1266914121}
   bulletPrefab: {fileID: 4137312476043748929, guid: cc4416c13cbc2fd4a92d968d61a30de1, type: 3}
 --- !u!1 &1248299865
