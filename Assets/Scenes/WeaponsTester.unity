@@ -169,9 +169,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rateOfFire: 0
-  weaponSpread: 0
-  bulletSpeed: 0
+  weaponSpread: 50
+  bulletSpeed: 20
   barrel: {fileID: 1266914121}
+  bulletPrefab: {fileID: 4137312476043748929, guid: cc4416c13cbc2fd4a92d968d61a30de1, type: 3}
 --- !u!1 &1248299865
 GameObject:
   m_ObjectHideFlags: 0
