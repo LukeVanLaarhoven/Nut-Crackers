@@ -8,6 +8,7 @@ public class Weapons : MonoBehaviour
     public float rateOfFire;
     public float weaponSpread;
     public float bulletSpeed;
+    public float destroyTimer;
 
     public GameObject barrel;
     public GameObject bulletPrefab;
@@ -39,14 +40,17 @@ public class Weapons : MonoBehaviour
             bulletList[i].transform.Translate(bulletSpeed * Time.deltaTime, 0, 0);
         }
 
-        Destroy(bullet, 5);
-
-        if(bullet == null)
-        {
-            bulletList.Remove(bullet);
-        }
+        StartCoroutine(RemoveBullet(bullet, destroyTimer));
 
         Debug.Log(bulletList.Count);
+    }
+
+    private IEnumerator RemoveBullet(GameObject bullet, float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        bulletList.Remove(bullet);
+
+        Destroy(bullet);
     }
 
     private Quaternion CalculateBulletSpread(float weaponSpread)
