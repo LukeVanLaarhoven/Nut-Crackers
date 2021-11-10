@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private Collider2D boxCollider;
 
+    [Header("Movement and jumping")]
     public float speed;
     public float jumpForce;
     public float jumpButtonReleaseDamping;
@@ -15,8 +16,18 @@ public class PlayerMovement : MonoBehaviour
     private float hangCounter;
     private float h;
 
+    [Space(10)]
+    [Header("Aiming transforms")]
+    public Transform aimHorizontal;
+    public Transform aimUp;
+    public Transform aimDiagonally;
+    public Transform aimDucking;
+    public Transform aimDownjumping;
+    public Transform currentAimingPoint;
+
     private bool isAimingDiagonally;
 
+    [Header("Animation")]
     public Animator torso;
     public Animator legs;
 
@@ -28,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
+        currentAimingPoint = aimHorizontal;
     }
 
     // Update is called once per frame
@@ -161,7 +173,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Shoot()
     {
-
+        print("PEW POW");
     }
 
     // For changing torso animations
