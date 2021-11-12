@@ -311,7 +311,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30544e182e842304988ff5afaceae6c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rateOfFire: 0.1
+  rateOfFire: 0.01
   weaponSpread: 5
   bulletSpeed: 12
   destroyTimer: 2

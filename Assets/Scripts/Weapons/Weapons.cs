@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Weapons : MonoBehaviour
 {
+    private PlayerMovement playerMovement;
+
     private float initialRateOfFire;
     public float rateOfFire;
     public float weaponSpread;
@@ -18,6 +20,8 @@ public class Weapons : MonoBehaviour
 
     public void Start()
     {
+        playerMovement = gameObject.GetComponent<PlayerMovement>();
+
         initialRateOfFire = rateOfFire;
     }
 
@@ -55,7 +59,7 @@ public class Weapons : MonoBehaviour
 
     private Quaternion CalculateBulletSpread(float weaponSpread)
     {
-        Quaternion angle = Quaternion.Euler(0, 0, Random.Range(-weaponSpread, weaponSpread));
+        Quaternion angle = Quaternion.Euler(0, 0, playerMovement.currentAimingPoint.eulerAngles.z + Random.Range(-weaponSpread, weaponSpread));
 
         return angle;
     }
