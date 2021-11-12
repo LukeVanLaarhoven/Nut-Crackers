@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private Collider2D boxCollider;
 
+    [Header("Movement and jumping")]
     public float speed;
     public float jumpForce;
     public float jumpButtonReleaseDamping;
@@ -15,7 +16,20 @@ public class PlayerMovement : MonoBehaviour
     private float hangCounter;
     private float h;
 
+    [Space(10)]
+    [Header("Aiming transforms")]
+    public Transform aimHorizontal;
+    public Transform aimUp;
+    public Transform aimDiagonally;
+    public Transform aimDucking;
+    public Transform aimDownjumping;
+    public Transform currentAimingPoint;
+
     private bool isAimingDiagonally;
+
+    [Header("Animation")]
+    public Animator torso;
+    public Animator legs;
 
     [SerializeField]
     private LayerMask platformLayerMask;
@@ -25,12 +39,65 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
+        currentAimingPoint = aimHorizontal;
     }
 
     // Update is called once per frame
     void Update()
     {
         h = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
+
+        // Change the onground animation
+        ChangeTorsoAnimation("onGround", IsGrounded());
+        ChangeLegsAnimation("onGround", IsGrounded());
+
+        #region walk animation
+        if (Input.GetAxis("Horizontal") != 0)
+        {
+            ChangeTorsoAnimation("isRunning", true);
+            ChangeLegsAnimation("isRunning", true);
+        }
+        else
+        {
+            ChangeTorsoAnimation("isRunning", false);
+            ChangeLegsAnimation("isRunning", false);
+        }
+        #endregion
+
+        #region crouch and aiming down
+        if (Input.GetAxis("Vertical") < 0)
+        {
+            // For crouching
+            if (IsGrounded())
+            {
+                ChangeTorsoAnimation("isCrouching", true);
+                ChangeLegsAnimation("isCrouching", true);
+            }
+            // For Aiming down in the air
+            else if (!IsGrounded())
+            {
+                ChangeTorsoAnimation("isCrouching", true);
+                ChangeLegsAnimation("isCrouching", false);
+            }
+        }
+        else
+        {
+            ChangeTorsoAnimation("isCrouching", false);
+            ChangeLegsAnimation("isCrouching", false);
+        }
+        #endregion
+
+        #region aiming up
+        if (Input.GetAxis("Vertical") > 0)
+        {
+            ChangeTorsoAnimation("aimingUp", true);
+        }
+        else
+        {
+            ChangeTorsoAnimation("aimingUp", false);
+        }
+        #endregion
+
         #region groundCheck
         //check for grounded and add some hangtime to still jump if not on platform annymore
         if (IsGrounded())
@@ -76,40 +143,6 @@ public class PlayerMovement : MonoBehaviour
             Shoot();
         }
         #endregion
-
-        #region aiming
-        // aming up
-        if (GetVerticalAxis() >= 0.01f && !isAimingDiagonally)
-        {
-            AimUp();
-        }
-
-        if (GetVerticalAxis() >= 0.01f && GetHorizontalAxis() >= 0.01f)
-        {
-            isAimingDiagonally = true;
-            AimDiagonallyRight();
-        }
-        else
-        {
-            isAimingDiagonally = false;
-        }
-
-        if (GetVerticalAxis() >= 0.01f && GetHorizontalAxis() <= -0.01f)
-        {
-            isAimingDiagonally = true;
-            AimDiagonallyLeft();
-        }
-        else
-        {
-            isAimingDiagonally = false;
-        }
-
-        if (GetVerticalAxis() <= -0.01f)
-        {
-            Duck();
-        }
-
-        #endregion
     }
 
     private void FixedUpdate()
@@ -138,29 +171,21 @@ public class PlayerMovement : MonoBehaviour
         return raycastHit.collider != null;
     }
 
-    public void AimUp()
-    {
-        print("Aiming up");
-    }
-
-    public void AimDiagonallyRight()
-    {
-        print("Aiming diagonally Rightways");
-    }
-
-    public void AimDiagonallyLeft()
-    {
-        print("Aiming diagonally Leftways");
-    }
-
-    public void Duck()
-    {
-        print("Duck");
-    }
-
     void Shoot()
     {
+        print("PEW POW");
+    }
 
+    // For changing torso animations
+    void ChangeTorsoAnimation(string action, bool value)
+    {
+        torso.SetBool(action, value);
+    }
+
+    // For changing legs animations
+    void ChangeLegsAnimation(string action, bool value)
+    {
+        legs.SetBool(action, value);
     }
 
     private float GetHorizontalAxis()
