@@ -12,7 +12,6 @@ public class Weapons : MonoBehaviour
     public float bulletSpeed;
     public float destroyTimer;
 
-    public GameObject barrel;
     public GameObject bulletPrefab;
     private GameObject bullet;
 
@@ -25,6 +24,14 @@ public class Weapons : MonoBehaviour
         initialRateOfFire = rateOfFire;
     }
 
+    private void Update()
+    {
+        //Debug.Log(playerMovement.currentAimingPoint.position.x);
+        //Debug.Log(playerMovement.currentAimingPoint.position.y);
+
+        //barrel.transform.position = playerMovement.currentAimingPoint.position;
+    }
+
     public void Shoot()
     {
         rateOfFire -= Time.deltaTime;
@@ -33,7 +40,7 @@ public class Weapons : MonoBehaviour
         {
             Debug.Log("Shoot");
 
-            bullet = Instantiate(bulletPrefab, barrel.transform.position, CalculateBulletSpread(weaponSpread));
+            bullet = Instantiate(bulletPrefab, playerMovement.currentAimingPoint.position, CalculateBulletSpread(weaponSpread));
             bulletList.Add(bullet);
 
             rateOfFire = initialRateOfFire;
@@ -45,8 +52,6 @@ public class Weapons : MonoBehaviour
         }
 
         StartCoroutine(RemoveBullet(bullet, destroyTimer));
-
-        Debug.Log(bulletList.Count);
     }
 
     private IEnumerator RemoveBullet(GameObject bullet, float seconds)
