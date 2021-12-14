@@ -15,7 +15,7 @@ public class Weapons : MonoBehaviour
     public GameObject bulletPrefab;
     private GameObject bullet;
 
-    List<GameObject> bulletList = new List<GameObject>();
+    public BulletScript bs;
 
     public void Start()
     {
@@ -24,42 +24,18 @@ public class Weapons : MonoBehaviour
         initialRateOfFire = rateOfFire;
     }
 
-    private void Update()
-    {
-        //Debug.Log(playerMovement.currentAimingPoint.position.x);
-        //Debug.Log(playerMovement.currentAimingPoint.position.y);
-
-        //barrel.transform.position = playerMovement.currentAimingPoint.position;
-    }
-
     public void Shoot()
     {
         rateOfFire -= Time.deltaTime;
 
-        if (Input.GetButton("Fire1") && rateOfFire < 0)
+        if (rateOfFire < 0)
         {
-            Debug.Log("Shoot");
+            bs.speed = bulletSpeed;
 
             bullet = Instantiate(bulletPrefab, playerMovement.currentAimingPoint.position, CalculateBulletSpread(weaponSpread));
-            bulletList.Add(bullet);
 
             rateOfFire = initialRateOfFire;
         }
-
-        for (int i = 0; i < bulletList.Count; i++)
-        {
-            bulletList[i].transform.Translate(bulletSpeed * Time.deltaTime, 0, 0);
-        }
-
-        StartCoroutine(RemoveBullet(bullet, destroyTimer));
-    }
-
-    private IEnumerator RemoveBullet(GameObject bullet, float seconds)
-    {
-        yield return new WaitForSeconds(seconds);
-        bulletList.Remove(bullet);
-
-        Destroy(bullet);
     }
 
     private Quaternion CalculateBulletSpread(float weaponSpread)

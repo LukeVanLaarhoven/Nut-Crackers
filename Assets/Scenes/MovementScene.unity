@@ -267,7 +267,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89217ac7c627a8c4e84dd4615f274cf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 20
   jumpForce: 5
   jumpButtonReleaseDamping: 0.5
   extraHeight: 0.25
@@ -311,11 +311,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30544e182e842304988ff5afaceae6c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rateOfFire: 0.01
-  weaponSpread: 30
-  bulletSpeed: 12
+  rateOfFire: 0.1
+  weaponSpread: 5
+  bulletSpeed: 15
   destroyTimer: 2
   bulletPrefab: {fileID: 4137312476043748929, guid: cc4416c13cbc2fd4a92d968d61a30de1, type: 3}
+  bs: {fileID: 6023150773169776163, guid: cc4416c13cbc2fd4a92d968d61a30de1, type: 3}
 --- !u!1 &270241698
 GameObject:
   m_ObjectHideFlags: 0
