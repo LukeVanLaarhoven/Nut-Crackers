@@ -12,16 +12,21 @@ public class EnemyBehaviour : MonoBehaviour
     [Space(10)]
     public float minTime;
     public float maxTime;
+
+    private bool canShoot;
     // Start is called before the first frame update
     void Start()
     {
-        
+        canShoot = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (canShoot)
+        {
+            StartCoroutine(DelayShoot());
+        }
     }
 
     private void OnBecameVisible()
@@ -42,9 +47,12 @@ public class EnemyBehaviour : MonoBehaviour
         return randomDelay;
     }
 
-    private IEnumerator DelayShoot(float delayTime)
+    private IEnumerator DelayShoot()
     {
+        canShoot = false;
+        float delayTime = CalculateDelayTime();
         yield return new WaitForSeconds(delayTime);
         Shoot();
+        canShoot = true;
     }
 }
