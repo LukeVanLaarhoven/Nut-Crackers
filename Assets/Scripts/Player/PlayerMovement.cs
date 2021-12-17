@@ -31,6 +31,8 @@ public class PlayerMovement : MonoBehaviour
     public Animator torso;
     public Animator legs;
 
+    Vector3 originalScale;
+
     [SerializeField]
     private LayerMask platformLayerMask;
 
@@ -40,6 +42,7 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
         //currentAimingPoint = aimHorizontal;
+        originalScale = transform.localScale;
     }
 
     // Update is called once per frame
@@ -135,12 +138,12 @@ public class PlayerMovement : MonoBehaviour
         //flipping the transform to face the correct side to shoot
         if (GetHorizontalAxis() >= 0.01f)
         {
-            transform.localScale = new Vector3(1, 1, 1);
+            transform.localScale = new Vector3(originalScale.x, originalScale.y, originalScale.z);
         }
 
         if (GetHorizontalAxis() <= -0.01f)
         {
-            transform.localScale = new Vector3(-1, 1, 1);
+            transform.localScale = new Vector3(-originalScale.x, originalScale.y, originalScale.z);
         }
         #endregion
 
