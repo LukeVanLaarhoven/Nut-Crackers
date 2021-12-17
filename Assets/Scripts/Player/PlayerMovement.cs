@@ -39,13 +39,15 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
-        currentAimingPoint = aimHorizontal;
+        //currentAimingPoint = aimHorizontal;
     }
 
     // Update is called once per frame
     void Update()
     {
         h = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
+
+        float angle = 0;
 
         // Change the onground animation
         ChangeTorsoAnimation("onGround", IsGrounded());
@@ -72,18 +74,24 @@ public class PlayerMovement : MonoBehaviour
             {
                 ChangeTorsoAnimation("isCrouching", true);
                 ChangeLegsAnimation("isCrouching", true);
+
+                currentAimingPoint = aimDucking;
             }
             // For Aiming down in the air
             else if (!IsGrounded())
             {
                 ChangeTorsoAnimation("isCrouching", true);
                 ChangeLegsAnimation("isCrouching", false);
+
+                currentAimingPoint = aimDownjumping;
             }
         }
         else
         {
             ChangeTorsoAnimation("isCrouching", false);
             ChangeLegsAnimation("isCrouching", false);
+
+            currentAimingPoint = aimHorizontal;
         }
         #endregion
 
@@ -136,13 +144,41 @@ public class PlayerMovement : MonoBehaviour
         }
         #endregion
 
-        #region Shoot
-        // shooting the weapon
-        if (Input.GetAxis("Fire1") >= 0.001f)
+        if (torso.GetBool("aimingUp") && torso.GetBool("isRunning"))
         {
-            Shoot();
+            currentAimingPoint = aimDiagonally;
+
+            angle = 45;
         }
-        #endregion
+        else if (torso.GetBool("aimingUp"))
+        {
+            currentAimingPoint = aimUp;
+
+            angle = 90;
+        }
+
+        if (torso.GetBool("isCrouching") && torso.GetBool("isRunning"))
+        {
+            currentAimingPoint = aimHorizontal;
+
+            angle = 0;
+        }
+
+        if (torso.GetBool("isCrouching") && !torso.GetBool("onGround"))
+        {
+            currentAimingPoint = aimDownjumping;
+
+            angle = -90;
+        }
+
+        if (transform.localScale.x == -1)
+        {
+            currentAimingPoint.rotation = Quaternion.Euler(currentAimingPoint.rotation.x, currentAimingPoint.rotation.y, currentAimingPoint.rotation.z + 180 - angle);
+        }
+        else
+        {
+            currentAimingPoint.rotation = Quaternion.Euler(currentAimingPoint.rotation.x, currentAimingPoint.rotation.y, currentAimingPoint.rotation.z + angle);
+        }
     }
 
     private void FixedUpdate()
@@ -169,11 +205,6 @@ public class PlayerMovement : MonoBehaviour
         Debug.DrawRay(boxCollider.bounds.center, Vector2.down * (boxCollider.bounds.extents.y + extraHeight), raycolor);
 
         return raycastHit.collider != null;
-    }
-
-    void Shoot()
-    {
-        print("PEW POW");
     }
 
     // For changing torso animations
