@@ -10,4 +10,9 @@ public class BulletScript : MonoBehaviour
     {
         gameObject.transform.Translate(speed * Time.deltaTime, 0, 0);
     }
+
+    private void OnBecameInvisible()
+    {
+        Destroy(this.gameObject);
+    }
 }
