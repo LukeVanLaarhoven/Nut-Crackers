@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyBehaviour : MonoBehaviour
 {
     public GameObject bullet;
+    public GameObject explosion;
 
     [Space(10)]
     public Transform barrelEnd;
@@ -14,6 +15,7 @@ public class EnemyBehaviour : MonoBehaviour
     public float maxTime;
 
     private bool canShoot;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -54,5 +56,15 @@ public class EnemyBehaviour : MonoBehaviour
         yield return new WaitForSeconds(delayTime);
         Shoot();
         canShoot = true;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Bullet"))
+        {
+            Instantiate(explosion, transform.position, Quaternion.identity);
+
+            gameObject.SetActive(false);
+        }
     }
 }
