@@ -58,11 +58,10 @@ public class EnemyBehaviour : MonoBehaviour
         canShoot = true;
     }
 
-    private void OnCollisionEnter2D(Collision2D col)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (col.gameObject.CompareTag("Bullet"))
+        if (collision.gameObject.CompareTag("Bullet"))
         {
-            Debug.Log("Enemy Hit");
             Instantiate(explosion, transform.position, Quaternion.identity);
 
             gameObject.SetActive(false);
