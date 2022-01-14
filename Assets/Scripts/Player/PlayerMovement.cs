@@ -174,7 +174,7 @@ public class PlayerMovement : MonoBehaviour
             angle = -90;
         }
 
-        if (transform.localScale.x == -1)
+        if (transform.localScale.x == -originalScale.x)
         {
             currentAimingPoint.rotation = Quaternion.Euler(currentAimingPoint.rotation.x, currentAimingPoint.rotation.y, currentAimingPoint.rotation.z + 180 - angle);
         }
