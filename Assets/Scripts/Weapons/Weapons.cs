@@ -11,6 +11,7 @@ public class Weapons : MonoBehaviour
     public float weaponSpread;
     public float bulletSpeed;
     public float destroyTimer;
+    public AudioSource shootAudio;
 
     public GameObject bulletPrefab;
     private GameObject bullet;
@@ -33,6 +34,8 @@ public class Weapons : MonoBehaviour
             bs.speed = bulletSpeed;
 
             bullet = Instantiate(bulletPrefab, playerMovement.currentAimingPoint.position, CalculateBulletSpread(weaponSpread));
+
+            shootAudio.Play();
 
             rateOfFire = initialRateOfFire;
         }
